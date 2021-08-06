@@ -10,7 +10,6 @@ import threading
 from Autodrivegame import objectDetection, laneDetection, myUtils, car
 
 FRAME = None
-OBJECT_FRAME = None
 LINES = []
 FINISH_SIGN = False
 
