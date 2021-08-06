@@ -59,10 +59,11 @@ if __name__ == "__main__":
             t1.start()
             First = False
 
-        OBJECT_FRAME = object_detector.detectObject(FRAME)
-
+        detected_object_list, OBJECT_FRAME = object_detector.detectObject(FRAME)
         RESULT_FRAME = drive_utils.drawLines(OBJECT_FRAME, LINES, GREEN)
+        RESULT_FRAME = drive_utils.drawROILines(RESULT_FRAME, lane_detector.roi_points)
 
+        drive_utils.printDetectedObjects(detected_object_list)
         drive_utils.showImage(RESULT_FRAME, "result")
 
         #object_lists = []

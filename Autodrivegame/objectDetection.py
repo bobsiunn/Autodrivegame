@@ -39,6 +39,11 @@ coco_cats_inv = {}
 color_cache = defaultdict(lambda: {})
 
 
+class detectedObject():
+    def __init__(self, type, pos):
+        self.type = type
+        self.pos = pos
+
 
 ## MJ 08/03 ##
 class objectDetector():
@@ -81,7 +86,7 @@ class objectDetector():
             
             cfg.mask_proto_debug = self.mask_proto_debug
 
-    def prep_display(self, dets_out, img, h, w, undo_transform=True, class_color=False, mask_alpha=0.45, fps_str=''):
+    def prep_display(self, dets_out, img, h, w, undo_transform=True, class_color=False, mask_alpha=0.2, fps_str=''):
         """
         Note: If undo_transform=False then im_h and im_w are allowed to be None.
         """
@@ -103,6 +108,7 @@ class objectDetector():
                     color_cache[on_gpu][color_idx] = color
                 return color
 
+        detected_object_list = []
                 
         if undo_transform:
             img_numpy = undo_image_transformation(img, w, h)
@@ -164,7 +170,7 @@ class objectDetector():
         img_numpy = (img_gpu * 255).byte().cpu().numpy()
 
         if num_dets_to_consider == 0:
-            return img_numpy
+            return detected_object_list, img_numpy
 
         if self.display_text or self.display_bboxes:
             for j in reversed(range(num_dets_to_consider)):
@@ -172,6 +178,9 @@ class objectDetector():
                 color = get_color(j)
                 score = scores[j]
 
+                _object = detectedObject(cfg.dataset.class_names[classes[j]], [x1, y1, x2, y2])
+                detected_object_list.append(_object)
+                
                 if self.display_bboxes:
                     cv2.rectangle(img_numpy, (x1, y1), (x2, y2), color, 1)
 
@@ -192,7 +201,7 @@ class objectDetector():
                     cv2.putText(img_numpy, text_str, text_pt, font_face, font_scale, text_color, font_thickness, cv2.LINE_AA)
                 
         
-        return img_numpy
+        return detected_object_list, img_numpy
 
 
     def evalimage(self, image):
@@ -200,10 +209,10 @@ class objectDetector():
         batch = FastBaseTransform()(frame.unsqueeze(0))
         preds = self.net(batch)
 
-        img_numpy = self.prep_display(preds, frame, None, None, undo_transform=False)
+        detected_object_list, img_numpy = self.prep_display(preds, frame, None, None, undo_transform=False)
         img_numpy[:, :, (2, 1, 0)]
 
-        return img_numpy
+        return detected_object_list, img_numpy
 
 
     def detectObject(self, image):
