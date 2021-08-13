@@ -484,6 +484,10 @@ coco_base_config = Config({
     'mask_proto_split_prototypes_by_head': False,
     'mask_proto_crop_with_pred_box': False,
 
+
+    ####
+    # 데이터 변환 
+    ####
     # SSD data augmentation parameters
     # Randomize hue, vibrance, etc.
     'augment_photometric_distort': True,
