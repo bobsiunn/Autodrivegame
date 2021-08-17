@@ -598,7 +598,6 @@ class Yolact(nn.Module):
                 
                 # Move the features last so the multiplication is easy
                 proto_out = proto_out.permute(0, 2, 3, 1).contiguous()
-
                 if cfg.mask_proto_bias:
                     bias_shape = [x for x in proto_out.size()]
                     bias_shape[-1] = 1
@@ -627,7 +626,7 @@ class Yolact(nn.Module):
                     pred_layer.parent = [self.prediction_layers[0]]
 
                 p = pred_layer(pred_x)
-                
+
                 for k, v in p.items():
                     pred_outs[k].append(v)
 

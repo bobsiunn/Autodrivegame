@@ -383,7 +383,8 @@
                         (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
                         (relu): ReLU(inplace=True)
                         (downsample): Sequential(
-                            (0): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False)   (1): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                            (0): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False)   
+                            (1): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
                         )
                     )
                     (1): Bottleneck(
@@ -408,7 +409,8 @@
             )
             (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
             (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-            (relu): ReLU(inplace=True)     (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+            (relu): ReLU(inplace=True)     
+            (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
         )
 
         (proto_net): Sequential(
