@@ -41,7 +41,7 @@ if __name__ == "__main__":
     myCar = car.Car()
     object_detector = objectDetection.objectDetector(
         trained_model="myYolact/weights/yolact_base_54_800000.pth", 
-        top_k=15,
+        top_k=25,
         score_threshold=0.4
     )
 

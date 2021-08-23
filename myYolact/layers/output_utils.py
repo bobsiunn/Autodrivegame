@@ -54,10 +54,13 @@ def postprocess(det_output, w, h, batch_idx=0, interpolation_mode='bilinear',
     boxes   = dets['box']
     scores  = dets['score']
     masks   = dets['mask']
+    print(masks.size())
+    print(masks.t())
 
     if cfg.mask_type == mask_type.lincomb and cfg.eval_mask_branch:
         # At this points masks is only the coefficients
         proto_data = dets['proto']
+        print(proto_data.size())
         
         # Test flag, do not upvote
         if cfg.mask_proto_debug:

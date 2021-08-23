@@ -203,8 +203,8 @@ class MultiBoxLoss(nn.Module):
                 losses[k] /= batch_size
 
         # Loss Key:
-        #  - B: Box Localization Loss
-        #  - C: Class Confidence Loss
+        #  - B: Box Localization Loss # mj
+        #  - C: Class Confidence Loss # mj
         #  - M: Mask Loss
         #  - P: Prototype Loss
         #  - D: Coefficient Diversity Loss
