@@ -1,6 +1,6 @@
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))) + "\myYolact")
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))) + "\yolact")
 
 from data import COCODetection, get_label_map, MEANS, COLORS
 from yolact import Yolact
@@ -48,7 +48,7 @@ class detectedObject():
 ## MJ 08/03 ##
 class objectDetector():
     def __init__(self, trained_model, 
-                cuda=True, display_lincomb=True, score_threshold=0, crop=False, display_text=True, display_bboxes=True,
+                cuda=True, display_lincomb=False, score_threshold=0, crop=False, display_text=True, display_bboxes=True,
                 mask_proto_debug=False, fast_nms=True, cross_class_nms=False,
                 top_k=0, display_masks=True, display_scores=True):
         self.display_lincomb = display_lincomb

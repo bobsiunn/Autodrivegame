@@ -23,5 +23,7 @@ class Utility():
 		cv2.imshow(title, frame)
 
 	def printDetectedObjects(self, detected_object_list):
+		print("========================")
 		for _object in detected_object_list:
 			print(_object.type, "-", _object.pos)
+		print("========================\n")
