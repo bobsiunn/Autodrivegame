@@ -22,8 +22,10 @@ class Utility():
 	def showImage(self, frame, title):
 		cv2.imshow(title, frame)
 
-	def printDetectedObjects(self, detected_object_list):
+	def printDetectedObjects(self, object_datas):
+		if len(object_datas) == 0: return
+
 		print("========================")
-		for _object in detected_object_list:
-			print(_object.type, "-", _object.pos)
-		print("========================\n")
+		for _object in object_datas:
+			print(f"{_object.type} {_object.pos} - {_object.score:.3f}")
+		print("========================\n")	

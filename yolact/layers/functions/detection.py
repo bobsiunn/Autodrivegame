@@ -57,7 +57,7 @@ class Detect(object):
 
         proto_data = predictions['proto'] if 'proto' in predictions else None
         inst_data  = predictions['inst']  if 'inst'  in predictions else None
-
+        #print("loc : {} \n conf : {}\nmask: {}\nprior: {}\nproto: {}\n".format(loc_data.size(), conf_data.size(), mask_data.size(), prior_data.size(), proto_data.size()))
         out = []
 
         with timer.env('Detect'):

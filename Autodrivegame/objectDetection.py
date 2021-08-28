@@ -24,7 +24,8 @@ import random
 import cProfile
 import pickle
 import json
-#import os
+import math
+
 from collections import defaultdict
 from pathlib import Path
 from collections import OrderedDict
@@ -40,10 +41,10 @@ color_cache = defaultdict(lambda: {})
 
 
 class detectedObject():
-    def __init__(self, type, pos):
+    def __init__(self, type, pos, score):
         self.type = type
         self.pos = pos
-
+        self.score = score
 
 ## MJ 08/03 ##
 class objectDetector():
@@ -177,8 +178,8 @@ class objectDetector():
                 x1, y1, x2, y2 = boxes[j, :]
                 color = get_color(j)
                 score = scores[j]
-
-                _object = detectedObject(cfg.dataset.class_names[classes[j]], [x1, y1, x2, y2])
+                
+                _object = detectedObject(cfg.dataset.class_names[classes[j]], [x1, y1, x2, y2], round(score, 3))
                 detected_object_list.append(_object)
                 
                 if self.display_bboxes:
@@ -200,7 +201,6 @@ class objectDetector():
                     cv2.rectangle(img_numpy, (x1, y1), (x1 + text_w, y1 - text_h - 4), color, -1)
                     cv2.putText(img_numpy, text_str, text_pt, font_face, font_scale, text_color, font_thickness, cv2.LINE_AA)
                 
-        
         return detected_object_list, img_numpy
 
 

@@ -37,13 +37,13 @@ if __name__ == "__main__":
         frame = cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
         FRAME = cv2.resize(frame, (480, 480))
 
-        LINES = lane_detector.detectLine(FRAME)
-        detected_object_list, OBJECT_FRAME = object_detector.detectObject(FRAME)
+        line_datas = lane_detector.detectLine(FRAME)
+        object_datas, OBJECT_FRAME = object_detector.detectObject(FRAME)
 
-        RESULT_FRAME = drive_utils.drawLines(OBJECT_FRAME, LINES, GREEN)
+        RESULT_FRAME = drive_utils.drawLines(OBJECT_FRAME, line_datas, GREEN)
         RESULT_FRAME = drive_utils.drawROILines(RESULT_FRAME, lane_detector.roi_points)
 
-        drive_utils.printDetectedObjects(detected_object_list)
+        drive_utils.printDetectedObjects(object_datas)
         drive_utils.showImage(RESULT_FRAME, "result")
 
         #object_lists = []
