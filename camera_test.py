@@ -10,11 +10,11 @@ import sys
 
 if __name__ == "__main__":
     object_detector = objectDetection.objectDetector(
-        trained_model="myYolact/weights/yolact_base_54_800000.pth", 
+        trained_model="yolact/weights/yolact_base_54_800000.pth", 
         top_k=15,
         score_threshold=0.4
     )
-
+    utils = myUtils.Utility()
 
     capture = cv2.VideoCapture(0,cv2.CAP_DSHOW)
     capture.set(cv2.CAP_PROP_FRAME_WIDTH, 480)
@@ -23,9 +23,9 @@ if __name__ == "__main__":
     
         ret, frame = capture.read()
 
-        result = object_detector.detectObject(frame)
+        detected_object_list, result = object_detector.detectObject(frame)
         cv2.imshow("result", result)
-
+        utils.printDetectedObjects(detected_object_list)
 
         if(cv2.waitKey(1) & 0xFF == ord('q')):
             cv2.destroyAllWindows()
