@@ -13,7 +13,7 @@ class LaneDetector():
         self.interested_binary_image = None
         self.interested_part_blured = None
 
-        self.roi_points = np.array([[(100,250), (0,400), (480, 400), (400, 250)]])
+        self.roi_points = np.array([[(160,250), (0,350), (480, 350), (320, 250)]])
 
         self.changing_rate = 7
         self.loop_rate = 15
