@@ -3,8 +3,8 @@ import numpy as np
 
 from PIL import ImageGrab
 
-from Autodrivegame import objectDetection, laneDetection, car, utils
-from config import FONT, BLUE, GREEN, RED, YOUTUBE_GRAB_AREA, GRAB_AREA, ROI_POINTS
+from Autodrivegame import drive_utils, objectDetection, laneDetection, car
+from Autodrivegame.config import FONT, BLUE, GREEN, RED, YOUTUBE_GRAB_AREA, GRAB_AREA, ROI_POINTS
 from Autodrivegame.objectTracker import Tracker
 
 myCar = car.Car()
@@ -24,7 +24,7 @@ def start(drive_utils, lane_detector, object_detector):
         RESULT_FRAME = drive_utils.drawLines(RESULT_FRAME, line_datas, GREEN)
         RESULT_FRAME = drive_utils.drawROILines(RESULT_FRAME, lane_detector.roi_points)
 
-        drive_utils.printDetectedObjects(detected_object_list)
+        # drive_utils.printDetectedObjects(detected_object_list)
         cv2.imshow("result", RESULT_FRAME)
         
         #object_lists = []
@@ -37,7 +37,7 @@ def start(drive_utils, lane_detector, object_detector):
 
 if __name__ == "__main__":
     # Settings 
-    drive_utils = utils.Utility()
+    drive_utils = drive_utils.Utility()
     object_tracker = Tracker()
     lane_detector =  laneDetection.LaneDetector(
         ROI_POINTS,

@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from config import COLORS, FONT, FONT_SCALE, FONT_THICKNESS
+from Autodrivegame.config import COLORS, FONT, FONT_SCALE, FONT_THICKNESS
 
 class Utility():
 	def __init__(self):
@@ -19,7 +19,7 @@ class Utility():
 		cv2.polylines(frame, np.int32([roi_points]), True, (147,20,255), 1)
 		return frame
 
-	def displayInfo(self, frame, detected_object_list, display_bboxes=True, display_text=True, display_pos=True, display_scores=True):
+	def displayInfo(self, frame, detected_object_list, display_bboxes=True, display_text=True, display_pos=True, display_track_num=True, display_scores=True):
 		for _object in detected_object_list:
 			x1, y1, x2, y2 = _object.pos[:]
 			color = COLORS[_object.typeid % len(COLORS)]
@@ -29,9 +29,13 @@ class Utility():
 				cv2.rectangle(frame, (x1, y1), (x2, y2), color, 1)
 
 			if display_text:
-				text_str = '%s[%d]: %.2f' % (_object.type, _object.id, score) if display_scores else _object.type
+				if display_track_num:
+					text_str = '%s[%d]: %.2f' % (_object.type, _object.id, score) if display_scores else (_object.type, _object.id)
+				else:
+					text_str = '%s: %.2f' % (_object.type, score) if display_scores else _object.type
 				if display_pos:
 					text_str += (np.array2string(np.array(_object.pos)))
+    				
 
 				text_w, text_h = cv2.getTextSize(text_str, FONT, FONT_SCALE, FONT_THICKNESS)[0]
 				text_pt = (x1, y1 - 10)

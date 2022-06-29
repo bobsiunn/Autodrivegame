@@ -67,3 +67,4 @@ class Tracker:
                     self.tracking_list = deque()
                 else:
                     del self.tracking_list[j]
+

@@ -2,18 +2,17 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))) + "\yolact")
 
-from data import COLORS, cfg, set_cfg
+from data import cfg, set_cfg
 from yolact import Yolact
 
 from utils import timer
 from utils.augmentations import FastBaseTransform
 from utils.functions import SavePath
-from layers.output_utils import postprocess, undo_image_transformation
+from layers.output_utils import postprocess
 
 import torch
 import torch.backends.cudnn as cudnn
 from collections import defaultdict
-import cv2
 
 from Autodrivegame.object import detectedObject
 
@@ -44,7 +43,7 @@ class objectDetector():
         self.config = self.model_path.model_name + '_config'
         set_cfg(self.config)
         
-        if tracker: self.tracker = tracker
+        self.tracker = tracker
 
         with torch.no_grad():
             if cuda:
