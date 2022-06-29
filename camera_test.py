@@ -1,6 +1,6 @@
 
 
-from Autodrivegame import objectDetection, laneDetection, myUtils, car
+from Autodrivegame import objectDetection, laneDetection, car, utils
 
 import cv2
 import sys
@@ -14,7 +14,7 @@ if __name__ == "__main__":
         top_k=15,
         score_threshold=0.4
     )
-    utils = myUtils.Utility()
+    utils = utils.Utility()
 
     capture = cv2.VideoCapture(0,cv2.CAP_DSHOW)
     capture.set(cv2.CAP_PROP_FRAME_WIDTH, 480)

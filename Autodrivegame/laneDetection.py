@@ -2,8 +2,9 @@ import cv2
 import numpy as np
 import sys
 
+# ROI POINTS should be [[(poinx1, pointy1), ..., (poinx4, pointy4)]]
 class LaneDetector():
-    def __init__(self, plot_canny = False, plot_binary = False, plot_high_level_binary = False, plot_canny_and_binary = False):
+    def __init__(self, roi_points, plot_canny = False, plot_binary = False, plot_high_level_binary = False, plot_canny_and_binary = False):
         self.origFrame = None
         self.origFrame_filtered = None
         self.origFrame_blured = None
@@ -13,7 +14,7 @@ class LaneDetector():
         self.interested_binary_image = None
         self.interested_part_blured = None
 
-        self.roi_points = np.array([[(160,250), (0,350), (480, 350), (320, 250)]])
+        self.roi_points = np.array(roi_points)
 
         self.changing_rate = 7
         self.loop_rate = 15

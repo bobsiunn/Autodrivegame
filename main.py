@@ -1,26 +1,46 @@
-import os
-import sys
 import cv2
 import numpy as np
-import time
-import matplotlib.pyplot as plt
-from PIL import ImageGrab, Image
-import threading
 
-from Autodrivegame import objectDetection, laneDetection, myUtils, car
+from PIL import ImageGrab
 
-FONT=cv2.FONT_HERSHEY_SIMPLEX
-BLUE = (255, 0, 0)
-GREEN = (0, 255, 0)
-RED = (0, 0, 255)
-YOUTUBE_GRAB_AREA = (0, 250, 1600, 1050)
-GRAB_AREA = (0, 0, 1100, 800)
+from Autodrivegame import objectDetection, laneDetection, car, utils
+from config import FONT, BLUE, GREEN, RED, YOUTUBE_GRAB_AREA, GRAB_AREA, ROI_POINTS
+from Autodrivegame.objectTracker import Tracker
 
-drive_utils = myUtils.Utility()
+myCar = car.Car()
+
+def start(drive_utils, lane_detector, object_detector):
+    while(True):
+        # Grab Image of screen
+        screen = np.array(ImageGrab.grab(bbox = GRAB_AREA))
+        frame = cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
+        FRAME = cv2.resize(frame, (480, 480))
+
+        line_datas = lane_detector.detectLine(FRAME)
+
+        detected_object_list = object_detector.detectObject(FRAME)
+
+        RESULT_FRAME = drive_utils.displayInfo(FRAME, detected_object_list)
+        RESULT_FRAME = drive_utils.drawLines(RESULT_FRAME, line_datas, GREEN)
+        RESULT_FRAME = drive_utils.drawROILines(RESULT_FRAME, lane_detector.roi_points)
+
+        drive_utils.printDetectedObjects(detected_object_list)
+        cv2.imshow("result", RESULT_FRAME)
+        
+        #object_lists = []
+        #myCar.drive(lines, object_lists)
+
+        if(cv2.waitKey(1) & 0xFF == ord('q')):
+            cv2.destroyAllWindows()
+            break
+    
 
 if __name__ == "__main__":
-
+    # Settings 
+    drive_utils = utils.Utility()
+    object_tracker = Tracker()
     lane_detector =  laneDetection.LaneDetector(
+        ROI_POINTS,
         plot_canny = False, 
         plot_binary = False, 
         plot_high_level_binary = False, 
@@ -29,31 +49,9 @@ if __name__ == "__main__":
     object_detector = objectDetection.objectDetector(
         trained_model="yolact/weights/yolact_base_54_800000.pth", 
         top_k=25,
-        score_threshold=0.4
+        score_threshold=0.4,
+        tracker = object_tracker
     )
-    myCar = car.Car()
 
-    while(True):
-        # Grab Image of screen
-        screen = np.array(ImageGrab.grab(bbox = YOUTUBE_GRAB_AREA))
-        frame = cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
-        FRAME = cv2.resize(frame, (480, 480))
-
-        # line_datas = lane_detector.detectLine(FRAME)
-        startTime = time.time()
-        object_datas, OBJECT_FRAME = object_detector.detectObject(FRAME)
-        cv2.putText(OBJECT_FRAME, "FPS: {:.1f}".format(1/(time.time()-startTime)), (70, 50), FONT, 1, (255, 0, 0), 2)
-        RESULT_FRAME = OBJECT_FRAME
-        # RESULT_FRAME = drive_utils.drawLines(OBJECT_FRAME, line_datas, GREEN)
-        # RESULT_FRAME = drive_utils.drawROILines(RESULT_FRAME, lane_detector.roi_points)
-
-        drive_utils.printDetectedObjects(object_datas)
-        drive_utils.showImage(RESULT_FRAME, "result")
-
-        #object_lists = []
-        #myCar.drive(lines, object_lists)
-
-        if(cv2.waitKey(1) & 0xFF == ord('q')):
-            cv2.destroyAllWindows()
-            break
     
+    start(drive_utils, lane_detector, object_detector)
