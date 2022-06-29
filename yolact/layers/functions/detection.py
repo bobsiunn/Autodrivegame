@@ -42,7 +42,11 @@ class Detect(object):
                 Shape: [num_priors, 4]
             proto_data: (tensor) If using mask_type.lincomb, the prototype masks
                 Shape: [batch, mask_h, mask_w, mask_dim]
-        
+            loc : torch.Size([1, 19248, 4]) 
+            conf : torch.Size([1, 19248, 81])
+            mask: torch.Size([1, 19248, 32])
+            prior: torch.Size([19248, 4])
+            proto: torch.Size([1, 138, 138, 32])
         Returns:
             output of shape (batch_size, top_k, 1 + 1 + 4 + mask_dim)
             These outputs are in the order: class idx, confidence, bbox coords, and mask.
@@ -57,7 +61,7 @@ class Detect(object):
 
         proto_data = predictions['proto'] if 'proto' in predictions else None
         inst_data  = predictions['inst']  if 'inst'  in predictions else None
-        #print("loc : {} \n conf : {}\nmask: {}\nprior: {}\nproto: {}\n".format(loc_data.size(), conf_data.size(), mask_data.size(), prior_data.size(), proto_data.size()))
+        # print("loc : {}\n conf : {}\nmask: {}\nprior: {}\nproto: {}\n".format(loc_data.size(), conf_data.size(), mask_data.size(), prior_data.size(), proto_data.size()))
         out = []
 
         with timer.env('Detect'):

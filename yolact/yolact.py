@@ -1,7 +1,9 @@
 import torch, torchvision
+from torch._C import device
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision.models.resnet import Bottleneck
+from torchsummary import summary
 import numpy as np
 from itertools import product
 from math import sqrt
@@ -680,6 +682,9 @@ class Yolact(nn.Module):
 
 # Some testing code
 if __name__ == '__main__':
+    net = Yolact()
+    summary(net, (3, 400, 400), device="cuda")
+    exit()
     from utils.functions import init_console
     init_console()
 

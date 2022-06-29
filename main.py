@@ -9,9 +9,11 @@ import threading
 
 from Autodrivegame import objectDetection, laneDetection, myUtils, car
 
+FONT=cv2.FONT_HERSHEY_SIMPLEX
 BLUE = (255, 0, 0)
 GREEN = (0, 255, 0)
 RED = (0, 0, 255)
+YOUTUBE_GRAB_AREA = (0, 250, 1600, 1050)
 GRAB_AREA = (0, 0, 1100, 800)
 
 drive_utils = myUtils.Utility()
@@ -33,15 +35,17 @@ if __name__ == "__main__":
 
     while(True):
         # Grab Image of screen
-        screen = np.array(ImageGrab.grab(bbox = GRAB_AREA))
+        screen = np.array(ImageGrab.grab(bbox = YOUTUBE_GRAB_AREA))
         frame = cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
         FRAME = cv2.resize(frame, (480, 480))
 
-        line_datas = lane_detector.detectLine(FRAME)
+        # line_datas = lane_detector.detectLine(FRAME)
+        startTime = time.time()
         object_datas, OBJECT_FRAME = object_detector.detectObject(FRAME)
-
-        RESULT_FRAME = drive_utils.drawLines(OBJECT_FRAME, line_datas, GREEN)
-        RESULT_FRAME = drive_utils.drawROILines(RESULT_FRAME, lane_detector.roi_points)
+        cv2.putText(OBJECT_FRAME, "FPS: {:.1f}".format(1/(time.time()-startTime)), (70, 50), FONT, 1, (255, 0, 0), 2)
+        RESULT_FRAME = OBJECT_FRAME
+        # RESULT_FRAME = drive_utils.drawLines(OBJECT_FRAME, line_datas, GREEN)
+        # RESULT_FRAME = drive_utils.drawROILines(RESULT_FRAME, lane_detector.roi_points)
 
         drive_utils.printDetectedObjects(object_datas)
         drive_utils.showImage(RESULT_FRAME, "result")
